@@ -1,3 +1,63 @@
+#![warn(missing_docs)]
+
+//! A sudoku solver using the backtrack method.
+
+// TODO: Create a "value" enum that is [1-9] or Empty
+
+struct Sudoku {
+    grid: [u8; 81],
+}
+
+impl Sudoku {
+    /// Create an empty sudoku grid
+    fn new() -> Self {
+        Self { grid: [0; 81] }
+    }
+
+    /// Return the n-th row of the sudoku grid
+    ///
+    /// The index must be in range [0-8]
+    #[allow(unused)]
+    fn row(&self, index: u8) -> &[u8; 9] {
+        todo!()
+    }
+
+    /// Return the n-th column of the sudoku grid
+    ///
+    /// The index must be in range [0-8]
+    #[allow(unused)]
+    fn column(&self, index: u8) -> &[u8; 9] {
+        todo!()
+    }
+
+    /// Return the n-th "subgrid" of the sudoku grid
+    ///
+    /// The index must be in range [0-8]
+    /// Subgrid indexes:
+    /// 1 | 2 | 3
+    /// 4 | 5 | 6
+    /// 7 | 8 | 9
+    #[allow(unused)]
+    fn subgrid(&self, index: u8) -> &[&[u8; 3]; 3] {
+        todo!()
+    }
+}
+
+impl std::fmt::Display for Sudoku {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // TODO: Add grid for pretty printer
+        for y in 0..9 {
+            for x in 0..9 {
+                write!(f, "{} ", self.grid[x + y * 9])?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
+    }
+}
+
 fn main() {
-    println!("Hello, world!");
+    let sudoku = Sudoku::new();
+    println!("Empty grid:");
+    println!("{sudoku}");
 }
