@@ -10,7 +10,7 @@ struct Sudoku {
 
 impl Sudoku {
     /// Create an empty sudoku grid
-    fn new() -> Self {
+    const fn new() -> Self {
         Self { grid: [0; 81] }
     }
 
@@ -18,16 +18,24 @@ impl Sudoku {
     ///
     /// The index must be in range [0-8]
     #[allow(unused)]
-    fn row(&self, index: u8) -> &[u8; 9] {
-        todo!()
+    fn row(&self, index: usize) -> [u8; 9] {
+        let mut res = [0; 9];
+        for (i, item) in self.grid.into_iter().skip(index * 9).take(9).enumerate() {
+            res[i] = item;
+        }
+        res
     }
 
     /// Return the n-th column of the sudoku grid
     ///
     /// The index must be in range [0-8]
     #[allow(unused)]
-    fn column(&self, index: u8) -> &[u8; 9] {
-        todo!()
+    fn column(&self, index: usize) -> [u8; 9] {
+        let mut res = [0; 9];
+        for i in 0..9 {
+            res[i] = self.grid[9 * i + index];
+        }
+        res
     }
 
     /// Return the n-th "subgrid" of the sudoku grid
@@ -38,8 +46,17 @@ impl Sudoku {
     /// 4 | 5 | 6
     /// 7 | 8 | 9
     #[allow(unused)]
-    fn subgrid(&self, index: u8) -> &[&[u8; 3]; 3] {
-        todo!()
+    fn subgrid(&self, index: usize) -> [[u8; 3]; 3] {
+        let mut res = [[0; 3]; 3];
+        let subgrid_row = index / 3;
+        let subgrid_column = index % 3;
+        for row in 0..3 {
+            for column in 0..3 {
+                res[row][column] =
+                    self.grid[(subgrid_row * 3 + row) * 9 + (subgrid_column * 3 + column)];
+            }
+        }
+        res
     }
 }
 
@@ -60,4 +77,75 @@ fn main() {
     let sudoku = Sudoku::new();
     println!("Empty grid:");
     println!("{sudoku}");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn get_row() {
+        let sudoku = Sudoku {
+            #[rustfmt::skip]
+            grid: [
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+
+            1, 2, 3,  4, 5, 6,  7, 8, 9, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            ],
+        };
+
+        assert_eq!(sudoku.row(6), [1, 2, 3, 4, 5, 6, 7, 8, 9,]);
+    }
+
+    #[test]
+    fn get_column() {
+        let sudoku = Sudoku {
+            #[rustfmt::skip]
+            grid: [
+            0, 0, 0,  1, 0, 0,  0, 0, 0, 
+            0, 0, 0,  2, 0, 0,  0, 0, 0, 
+            0, 0, 0,  3, 0, 0,  0, 0, 0, 
+            
+            0, 0, 0,  4, 0, 0,  0, 0, 0, 
+            0, 0, 0,  5, 0, 0,  0, 0, 0, 
+            0, 0, 0,  6, 0, 0,  0, 0, 0, 
+
+            0, 0, 0,  7, 0, 0,  0, 0, 0, 
+            0, 0, 0,  8, 0, 0,  0, 0, 0, 
+            0, 0, 0,  9, 0, 0,  0, 0, 0, 
+            ],
+        };
+
+        assert_eq!(sudoku.column(3), [1, 2, 3, 4, 5, 6, 7, 8, 9,]);
+    }
+
+    #[test]
+    fn get_subgrid() {
+        let sudoku = Sudoku {
+            #[rustfmt::skip]
+            grid: [
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+                       
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+            0, 0, 0,  0, 0, 0,  0, 0, 0, 
+                       
+            0, 0, 0,  1, 2, 3,  0, 0, 0, 
+            0, 0, 0,  4, 5, 6,  0, 0, 0, 
+            0, 0, 0,  7, 8, 9,  0, 0, 0, 
+            ],
+        };
+
+        assert_eq!(sudoku.subgrid(7), [[1, 2, 3,], [4, 5, 6,], [7, 8, 9,]]);
+    }
 }
