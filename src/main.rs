@@ -23,6 +23,8 @@ struct Candidate {
     column: usize,
 }
 
+// TODO: Move this to `Sudoku`
+// TODO: Add doc
 impl Candidate {
     const fn new() -> Self {
         Self {
@@ -67,11 +69,14 @@ impl Candidate {
     }
 }
 
+// TODO: Make this a method for Grid/Sudoku
 /// Return the id of the subgrid which the provided coords fall in
 const fn subgrid_from_coords(row: usize, column: usize) -> usize {
     (row / 3) * 3 + (column / 3)
 }
 
+// TODO: Rename to `is_valid` for more idiomatic fn naming
+// TODO: Make this a method from Grid/Sudoku
 /// Return `true` if the `Candidate` does not violate any rules of sudoku
 fn validate(s: &Sudoku, c: &Candidate) -> bool {
     let subgrid = subgrid_from_coords(c.row, c.column);
@@ -81,6 +86,7 @@ fn validate(s: &Sudoku, c: &Candidate) -> bool {
         && !s.subgrid_flat(subgrid).contains(&c.value)
 }
 
+// TODO: Create a trait for "Backtrack" and its related/mendatory fns
 /// Find a solution for the given grid
 /// First call must be done with the first possible `Candidate`
 fn backtrack(s: &mut Sudoku, c: &Candidate) {
