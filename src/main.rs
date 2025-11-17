@@ -1,21 +1,20 @@
 #![warn(missing_docs)]
 
 //! A sudoku solver using the backtrack method.
+//! https://en.wikipedia.org/wiki/Backtracking
+//! ```text
+//! procedure backtrack(P, c) is
+//!     if reject(P, c) then return
+//!     if accept(P, c) then output(P, c)
+//!     s ← first(P, c)
+//!     while s ≠ NULL do
+//!         backtrack(P, s)
+//!         s ← next(P, s)
+//! ```
 
 mod sudoku;
 
 use sudoku::Sudoku;
-
-// https://en.wikipedia.org/wiki/Backtracking
-// ```
-// procedure backtrack(P, c) is
-//     if reject(P, c) then return
-//     if accept(P, c) then output(P, c)
-//     s ← first(P, c)
-//     while s ≠ NULL do
-//         backtrack(P, s)
-//         s ← next(P, s)
-// ```
 
 #[derive(PartialEq, Eq, Debug, Clone, Copy)]
 struct Candidate {
