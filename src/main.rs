@@ -1,7 +1,7 @@
 #![warn(missing_docs)]
 
 //! A sudoku solver using the backtrack method.
-//! https://en.wikipedia.org/wiki/Backtracking
+//! <https://en.wikipedia.org/wiki/Backtracking>
 //! ```text
 //! procedure backtrack(P, c) is
 //!     if reject(P, c) then return
@@ -26,6 +26,7 @@ struct Candidate {
 // TODO: Move this to `Sudoku`
 // TODO: Add doc
 impl Candidate {
+    #[allow(unused)]
     const fn new() -> Self {
         Self {
             value: 1,

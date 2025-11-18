@@ -5,6 +5,7 @@ pub struct Sudoku {
 }
 
 impl Sudoku {
+    #[allow(unused)]
     /// Create an empty sudoku grid
     pub const fn new() -> Self {
         Self { grid: [0; 81] }
@@ -52,8 +53,8 @@ impl Sudoku {
     #[allow(unused)]
     pub fn column(&self, index: usize) -> [u8; 9] {
         let mut res = [0; 9];
-        for i in 0..9 {
-            res[i] = self.grid[9 * i + index];
+        for (i, cell) in res.iter_mut().enumerate() {
+            *cell = self.grid[9 * i + index];
         }
         res
     }
@@ -70,10 +71,10 @@ impl Sudoku {
         let mut res = [[0; 3]; 3];
         let subgrid_row = index / 3;
         let subgrid_column = index % 3;
-        for row in 0..3 {
-            for column in 0..3 {
-                res[row][column] =
-                    self.grid[(subgrid_row * 3 + row) * 9 + (subgrid_column * 3 + column)];
+        for (row_index, row) in res.iter_mut().enumerate() {
+            for (column_index, column) in row.iter_mut().enumerate().take(3) {
+                *column = self.grid
+                    [(subgrid_row * 3 + row_index) * 9 + (subgrid_column * 3 + column_index)];
             }
         }
         res
